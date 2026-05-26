@@ -45,7 +45,6 @@ Template placeholder link: `TODO_ADD_PUBLIC_TEMPLATE_LINK`
 
 ## CSV Template
 - `templates/openfooter-template.csv`
-- `templates/sample-social-links.csv`
 
 ## JSON Template
 - `templates/openfooter-template.json`
