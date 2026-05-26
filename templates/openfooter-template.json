@@ -1,0 +1,21 @@
+{
+  "brandName": "TurtlesStudios",
+  "brandTagline": "Music, tech, gaming, and creative projects",
+  "brandMessage": "Music, gear reviews, dev experiments, gaming, and creative builds.",
+  "brandImageUrl": "https://example.com/logo.png",
+  "brandImageAlt": "TurtlesStudios logo",
+  "brandImageShape": "rounded",
+  "theme": "dark",
+  "layout": "columns-brand",
+  "links": [
+    {
+      "type": "social",
+      "label": "YouTube",
+      "url": "https://youtube.com/@yourhandle",
+      "icon": "youtube",
+      "category": "Social",
+      "priority": 1,
+      "isActive": true
+    }
+  ]
+}
