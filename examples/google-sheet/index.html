@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>OpenFooter Google Sheet Test</title>
+  </head>
+  <body>
+    <h1>OpenFooter Google Sheet Test</h1>
+    <p>Paste a normal Google Sheets share/edit URL. OpenFooter will convert it to a CSV export URL.</p>
+    <p>The sheet must be public/viewable or published to web as CSV.</p>
+
+    <script src="../../dist/openfooter.iife.min.js"></script>
+
+    <open-footer
+      source="google-sheet"
+      url="https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit?usp=sharing"
+      sheet-gid="0"
+      brand-name="OpenFooter Google Sheet Test"
+      theme="dark"
+      layout="columns">
+    </open-footer>
+  </body>
+</html>
