@@ -13,8 +13,10 @@ export type OpenFooterLayout =
   | 'columns'
   | 'columns-brand'
   | 'newsletter'
-  | 'compact'
-  | 'full';
+  | 'compact';
+
+
+export type OpenFooterBrandImageShape = 'circle' | 'rounded' | 'square';
 
 export type OpenFooterLink = {
   label: string;
@@ -37,6 +39,10 @@ export type OpenFooterConfig = {
   links?: OpenFooterLink[];
   brandName?: string;
   brandTagline?: string;
+  brandMessage?: string;
+  brandImageUrl?: string;
+  brandImageAlt?: string;
+  brandImageShape?: OpenFooterBrandImageShape;
   copyrightName?: string;
   theme?: 'light' | 'dark' | 'minimal' | 'auto';
   layout?: OpenFooterLayout;

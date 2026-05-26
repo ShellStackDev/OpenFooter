@@ -3,53 +3,37 @@ import { readCache, writeCache } from '../utils/cache';
 import type { OpenFooterConfig, OpenFooterLink } from '../schema';
 import { normalizeGoogleSheetUrl } from '../utils/google-sheet';
 
-const inFlightRequests = new Map<string, Promise<OpenFooterLink[]>>();
+const inFlightRequests = new Map<string, Promise<{ config: Partial<OpenFooterConfig>; links: OpenFooterLink[] }>>();
 
-export async function getGoogleSheetLinks(config: OpenFooterConfig): Promise<OpenFooterLink[]> {
-  if (!config.url) return [];
-
+export async function getGoogleSheetData(config: OpenFooterConfig): Promise<{ config: Partial<OpenFooterConfig>; links: OpenFooterLink[] }> {
+  if (!config.url) return { config: {}, links: [] };
   let normalizedUrl = config.url;
-  try {
-    normalizedUrl = normalizeGoogleSheetUrl(config.url, config.sheetGid);
-  } catch {
-    return [];
-  }
+  try { normalizedUrl = normalizeGoogleSheetUrl(config.url, config.sheetGid); } catch { return { config: {}, links: [] }; }
 
   const ttl = config.cacheTtlSeconds ?? 300;
   const requestKey = `google-sheet:${normalizedUrl}`;
   const key = `csv:${normalizedUrl}`;
-
   const existing = inFlightRequests.get(requestKey);
   if (existing) return existing;
 
   const task = (async () => {
     const cached = readCache(key, ttl);
-    if (cached?.fresh && cached.data) return cached.data as OpenFooterLink[];
-
+    if (cached?.fresh && cached.data) return cached.data as { config: Partial<OpenFooterConfig>; links: OpenFooterLink[] };
     try {
       const res = await fetch(normalizedUrl);
       if (!res.ok) throw new Error('Fetch failed');
-
       const contentType = res.headers.get('content-type')?.toLowerCase() ?? '';
       const csv = await res.text();
       const looksLikeHtml = contentType.includes('text/html') || /<\s*html/i.test(csv);
-      if (looksLikeHtml) {
-        throw new Error('OpenFooter could not load the Google Sheet. The URL did not return CSV. Make sure the sheet is shared publicly or published to the web. For easiest setup, use Share → Anyone with the link can view, or File → Share → Publish to web.');
-      }
-
+      if (looksLikeHtml) throw new Error('google-sheet-html');
       const parsed = parseCsv(csv);
       writeCache(key, parsed);
       return parsed;
     } catch {
-      if (cached?.data) return cached.data as OpenFooterLink[];
-      return [];
+      if (cached?.data) return cached.data as { config: Partial<OpenFooterConfig>; links: OpenFooterLink[] };
+      return { config: {}, links: [] };
     }
   })();
-
   inFlightRequests.set(requestKey, task);
-  try {
-    return await task;
-  } finally {
-    inFlightRequests.delete(requestKey);
-  }
+  try { return await task; } finally { inFlightRequests.delete(requestKey); }
 }

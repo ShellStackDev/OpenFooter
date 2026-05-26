@@ -1,7 +1,8 @@
 import { readFileSync } from 'node:fs';
 
-const REQUIRED_COLUMNS = ['type','label','url','icon','category','priority','is_active','is_featured','description','start_date','end_date'];
+const REQUIRED_COLUMNS = ['type','key','value','label','url','icon','category','priority','is_active','is_featured','description','start_date','end_date'];
 const TRUE_FALSE = ['true','false','yes','no','1','0','y','n'];
+const SHAPES = ['circle','rounded','square'];
 
 const isSafeUrl = (value: string): boolean => {
   const url = value.trim();
@@ -10,7 +11,6 @@ const isSafeUrl = (value: string): boolean => {
   if (lowered.startsWith('javascript:') || lowered.startsWith('data:text/html')) return false;
   return /^(https?:|mailto:|tel:)/i.test(url);
 };
-
 const isValidDate = (value: string): boolean => !value || !Number.isNaN(Date.parse(value));
 const parseCsvRow = (line: string) => line.split(',').map((v) => v.trim());
 
@@ -28,6 +28,13 @@ function validateCsv(path: string): string[] {
     const row: Record<string, string> = {};
     headers.forEach((h, i) => { row[h] = cols[i] ?? ''; });
 
+    if ((row.type || '').toLowerCase() === 'meta') {
+      if (row.key === 'brandImageUrl' && row.value && !isSafeUrl(row.value)) errors.push(`Row ${rowNum}: invalid brandImageUrl`);
+      if (row.key === 'brandImageShape' && row.value && !SHAPES.includes(row.value)) errors.push(`Row ${rowNum}: brandImageShape must be one of ${SHAPES.join(', ')}`);
+      if (row.key === 'brandMessage' && row.value.length > 280) console.warn(`Warning Row ${rowNum}: brandMessage is longer than 280 chars`);
+      return;
+    }
+
     if (!row.label) errors.push(`Row ${rowNum}: missing label`);
     if (!row.url || !isSafeUrl(row.url)) errors.push(`Row ${rowNum}: invalid/unsafe url`);
     if (row.priority && Number.isNaN(Number(row.priority))) errors.push(`Row ${rowNum}: priority must be a number`);
@@ -38,14 +45,18 @@ function validateCsv(path: string): string[] {
     if (!isValidDate(row.start_date || '')) errors.push(`Row ${rowNum}: invalid start_date`);
     if (!isValidDate(row.end_date || '')) errors.push(`Row ${rowNum}: invalid end_date`);
   });
-
   return errors;
 }
 
 function validateJson(path: string): string[] {
-  const data = JSON.parse(readFileSync(path, 'utf8')) as any[];
+  const data = JSON.parse(readFileSync(path, 'utf8')) as any;
+  const links = Array.isArray(data) ? data : (data.links ?? []);
   const errors: string[] = [];
-  data.forEach((row, idx) => {
+  if (data.brandImageUrl && !isSafeUrl(data.brandImageUrl)) errors.push('Invalid/unsafe brandImageUrl');
+  if (data.brandImageShape && !SHAPES.includes(data.brandImageShape)) errors.push(`brandImageShape must be one of ${SHAPES.join(', ')}`);
+  if (data.brandMessage && String(data.brandMessage).length > 280) console.warn('Warning: brandMessage is longer than 280 chars');
+
+  links.forEach((row: any, idx: number) => {
     const rowNum = idx + 1;
     if (!row.label) errors.push(`Item ${rowNum}: missing label`);
     if (!row.url || !isSafeUrl(row.url)) errors.push(`Item ${rowNum}: invalid/unsafe url`);
@@ -57,15 +68,7 @@ function validateJson(path: string): string[] {
 }
 
 const filePath = process.argv[2];
-if (!filePath) {
-  console.error('Usage: npm run validate -- <path-to-csv-or-json>');
-  process.exit(1);
-}
-
+if (!filePath) { console.error('Usage: npm run validate -- <path-to-csv-or-json>'); process.exit(1); }
 const errors = filePath.endsWith('.csv') ? validateCsv(filePath) : validateJson(filePath);
-if (errors.length) {
-  console.error('Validation failed:\n' + errors.map((e) => `- ${e}`).join('\n'));
-  process.exit(1);
-}
-
+if (errors.length) { console.error('Validation failed:\n' + errors.map((e) => `- ${e}`).join('\n')); process.exit(1); }
 console.log(`Validation passed for ${filePath}`);

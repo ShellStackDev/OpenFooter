@@ -251,3 +251,36 @@ Use `newsletter` with optional config:
 ```
 
 Layout examples are available in `examples/layouts/`.
+
+## Brand Profile
+
+OpenFooter supports a richer brand profile block with brand name, tagline, message, and image.
+
+### Attribute-based setup
+
+```html
+<open-footer
+  source="google-sheet"
+  url="https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit?usp=sharing"
+  brand-name="TurtlesStudios"
+  brand-tagline="Music, tech, gaming, and creative projects"
+  brand-message="Music, gear reviews, dev experiments, gaming, and creative builds."
+  brand-image-url="https://example.com/logo.png"
+  brand-image-shape="rounded"
+  theme="dark"
+  layout="columns-brand">
+</open-footer>
+```
+
+### CSV / Google Sheet metadata setup
+
+```csv
+type,key,value,label,url,icon,category,priority,is_active,is_featured,description,start_date,end_date
+meta,brandName,TurtlesStudios,,,,,,,,,,
+meta,brandTagline,"Music, tech, gaming, and creative projects",,,,,,,,,,
+meta,brandMessage,"Music, gear reviews, dev experiments, gaming, and creative builds.",,,,,,,,,,
+meta,brandImageUrl,https://example.com/logo.png,,,,,,,,,,
+meta,brandImageShape,rounded,,,,,,,,,,
+```
+
+Metadata rows are optional and are not rendered as links.

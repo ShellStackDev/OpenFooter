@@ -2,52 +2,39 @@ import type { OpenFooterConfig, OpenFooterLink } from './schema';
 import { getStyles } from './styles';
 import { getInlineLinks } from './adapters/inline-json';
 import { getRemoteJsonLinks } from './adapters/remote-json';
-import { getGoogleSheetLinks } from './adapters/google-sheet-csv';
+import { getGoogleSheetData } from './adapters/google-sheet-csv';
 import { buildFooterHtml } from './render';
 import { isGoogleSheetSource } from './utils/google-sheet';
 
-const defaults: OpenFooterConfig = { source: 'inline-json', theme: 'dark', layout: 'full', cacheTtlSeconds: 300 };
+const defaults: OpenFooterConfig = { source: 'inline-json', theme: 'dark', layout: 'compact', cacheTtlSeconds: 300, brandImageShape: 'rounded' };
 
 export class OpenFooterElement extends HTMLElement {
-  static get observedAttributes() { return ['source','url','sheet-gid','brand-name','brand-tagline','theme','layout']; }
+  static get observedAttributes() { return ['source','url','sheet-gid','brand-name','brand-tagline','brand-message','brand-image-url','brand-image-alt','brand-image-shape','theme','layout']; }
   private root = this.attachShadow({ mode: 'open' });
   config: OpenFooterConfig = { ...defaults };
   private hasConnected = false;
   private renderQueued = false;
   private lastRequestKey?: string;
 
-  connectedCallback() {
-    this.hasConnected = true;
-    this.syncAttributes();
-    this.requestRender(false);
-  }
-
-  attributeChangedCallback() {
-    this.syncAttributes();
-    if (this.hasConnected) this.requestRender(false);
-  }
+  connectedCallback() { this.hasConnected = true; this.syncAttributes(); this.requestRender(false); }
+  attributeChangedCallback() { this.syncAttributes(); if (this.hasConnected) this.requestRender(false); }
 
   private syncAttributes() {
-    this.config = {
-      ...this.config,
+    this.config = { ...this.config,
       source: (this.getAttribute('source') as OpenFooterConfig['source']) ?? this.config.source,
       url: this.getAttribute('url') ?? this.config.url,
       sheetGid: this.getAttribute('sheet-gid') ?? this.config.sheetGid,
       brandName: this.getAttribute('brand-name') ?? this.config.brandName,
       brandTagline: this.getAttribute('brand-tagline') ?? this.config.brandTagline,
+      brandMessage: this.getAttribute('brand-message') ?? this.config.brandMessage,
+      brandImageUrl: this.getAttribute('brand-image-url') ?? this.config.brandImageUrl,
+      brandImageAlt: this.getAttribute('brand-image-alt') ?? this.config.brandImageAlt,
+      brandImageShape: (this.getAttribute('brand-image-shape') as OpenFooterConfig['brandImageShape']) ?? this.config.brandImageShape,
       theme: (this.getAttribute('theme') as OpenFooterConfig['theme']) ?? this.config.theme,
-      layout: (this.getAttribute('layout') as OpenFooterConfig['layout']) ?? this.config.layout
-    };
+      layout: (this.getAttribute('layout') as OpenFooterConfig['layout']) ?? this.config.layout };
   }
 
-  private requestRender(force: boolean) {
-    if (this.renderQueued) return;
-    this.renderQueued = true;
-    queueMicrotask(() => {
-      this.renderQueued = false;
-      void this.refresh(force);
-    });
-  }
+  private requestRender(force: boolean) { if (this.renderQueued) return; this.renderQueued = true; queueMicrotask(() => { this.renderQueued = false; void this.refresh(force); }); }
 
   async refresh(force = true) {
     const sourceKey = isGoogleSheetSource(this.config.source) ? 'google-sheet-csv' : (this.config.source ?? 'inline-json');
@@ -55,11 +42,15 @@ export class OpenFooterElement extends HTMLElement {
     if (!force && this.lastRequestKey === requestKey) return;
 
     let links: OpenFooterLink[] = [];
-    if (sourceKey === 'remote-json') links = await getRemoteJsonLinks(this.config);
-    else if (sourceKey === 'google-sheet-csv') links = await getGoogleSheetLinks(this.config);
-    else links = getInlineLinks(this.config);
+    let mergedConfig: OpenFooterConfig = { ...this.config };
+    if (sourceKey === 'remote-json') links = await getRemoteJsonLinks(mergedConfig);
+    else if (sourceKey === 'google-sheet-csv') {
+      const data = await getGoogleSheetData(mergedConfig);
+      mergedConfig = { ...data.config, ...mergedConfig };
+      links = data.links;
+    } else links = getInlineLinks(mergedConfig);
 
     this.lastRequestKey = requestKey;
-    this.root.innerHTML = `<style>${getStyles()}</style>${buildFooterHtml(this.config, links)}`;
+    this.root.innerHTML = `<style>${getStyles()}</style>${buildFooterHtml(mergedConfig, links)}`;
   }
 }
