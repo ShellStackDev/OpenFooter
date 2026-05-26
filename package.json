@@ -1,12 +1,22 @@
 {
   "name": "openfooter",
   "version": "0.1.0",
-  "description": "Framework-agnostic embeddable footer Web Component and JS library",
+  "description": "A framework-agnostic embeddable footer Web Component for unified links, socials, and project promotion.",
   "type": "module",
+  "homepage": "https://github.com/prlaclede/OpenFooter#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prlaclede/OpenFooter.git"
+  },
+  "bugs": {
+    "url": "https://github.com/prlaclede/OpenFooter/issues"
+  },
   "main": "dist/openfooter.iife.js",
   "module": "dist/openfooter.es.js",
+  "types": "dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/openfooter.es.js",
       "default": "./dist/openfooter.es.js"
     }
@@ -14,13 +24,16 @@
   "files": [
     "dist",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    "CHANGELOG.md"
   ],
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && node scripts/build-minify.mjs",
     "typecheck": "tsc --noEmit",
     "preview": "vite preview",
+    "prepublishOnly": "npm run typecheck && npm run build",
+    "pack:check": "npm pack --dry-run",
     "validate": "node scripts/validate-config.ts",
     "generate": "node scripts/generate-embed-code.ts",
     "create-template": "node scripts/create-template.ts",
@@ -29,13 +42,20 @@
   "keywords": [
     "footer",
     "web-component",
+    "custom-element",
+    "links",
+    "social-links",
+    "linktree",
+    "google-sheets",
     "cdn",
     "vanilla-js"
   ],
   "author": "Phillip Laclede",
   "license": "MIT",
   "devDependencies": {
+    "terser": "^5.39.2",
     "typescript": "^5.6.3",
-    "vite": "^5.4.10"
+    "vite": "^5.4.10",
+    "vite-plugin-dts": "^4.5.4"
   }
 }

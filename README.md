@@ -5,7 +5,7 @@ OpenFooter is a framework-agnostic, embeddable Web Component + vanilla JS librar
 ## Quick Start (Fastest Path)
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/openfooter/dist/openfooter.iife.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/openfooter@0.1.0/dist/openfooter.iife.min.js"></script>
 
 <open-footer
   source="google-sheet-csv"
@@ -14,6 +14,30 @@ OpenFooter is a framework-agnostic, embeddable Web Component + vanilla JS librar
   theme="dark">
 </open-footer>
 ```
+
+## Use OpenFooter from a CDN
+
+jsDelivr (recommended with pinned versions in production):
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/openfooter@0.1.0/dist/openfooter.iife.min.js"></script>
+
+<open-footer
+  source="google-sheet-csv"
+  url="YOUR_PUBLISHED_GOOGLE_SHEET_CSV_URL"
+  brand-name="Your Brand"
+  theme="dark"
+  layout="columns">
+</open-footer>
+```
+
+unpkg:
+
+```html
+<script src="https://unpkg.com/openfooter@0.1.0/dist/openfooter.iife.min.js"></script>
+```
+
+Unpinned URLs (without `@0.1.0`) load the latest package version and may change unexpectedly. Pin versions for production stability.
 
 ## 2-Minute Setup
 1. Copy `templates/openfooter-template.csv` into Google Sheets.
@@ -31,7 +55,7 @@ OpenFooter is a framework-agnostic, embeddable Web Component + vanilla JS librar
 7. Copy the generated CSV URL.
 8. Paste it into `<open-footer url="...">`.
 
-Google lets owners/editors publish Sheets to the web and stop publishing later. Use published view links (CSV output), not editable links.
+Google lets owners/editors publish Sheets to the web and stop publishing later. Use published CSV links, not editable links.
 
 ### Permissions / Privacy Notes
 - The sheet used by OpenFooter must be published to the web.
@@ -54,12 +78,6 @@ Template placeholder link: `TODO_ADD_PUBLIC_TEMPLATE_LINK`
 npm install openfooter
 ```
 
-## CDN
-```html
-<script src="https://cdn.jsdelivr.net/npm/openfooter/dist/openfooter.iife.min.js"></script>
-<script src="https://unpkg.com/openfooter/dist/openfooter.iife.min.js"></script>
-```
-
 ## Web Component Example
 ```html
 <open-footer
@@ -75,7 +93,7 @@ npm install openfooter
 ## Vanilla JS Example
 ```html
 <div id="brand-footer"></div>
-<script src="https://cdn.jsdelivr.net/npm/openfooter/dist/openfooter.iife.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/openfooter@0.1.0/dist/openfooter.iife.min.js"></script>
 <script>
 OpenFooter.render('#brand-footer', {
   source: 'remote-json',
@@ -87,14 +105,12 @@ OpenFooter.render('#brand-footer', {
 ```
 
 ## WordPress Example
-Add in a Custom HTML block:
 ```html
-<script src="https://cdn.jsdelivr.net/npm/openfooter/dist/openfooter.iife.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/openfooter@0.1.0/dist/openfooter.iife.min.js"></script>
 <open-footer source="google-sheet-csv" url="YOUR_CSV_URL" brand-name="Your Brand"></open-footer>
 ```
 
 ## Webflow Example
-Add script in page footer custom code and place embed block:
 ```html
 <open-footer source="google-sheet-csv" url="YOUR_CSV_URL" brand-name="Your Brand"></open-footer>
 ```
@@ -103,13 +119,7 @@ Add script in page footer custom code and place embed block:
 See `examples/plain-html/index.html`.
 
 ## Next.js Example
-In `app/layout.tsx` use a script tag for IIFE bundle and render `<open-footer ... />` in layout body.
-
-## Helper Scripts
-- `npm run create-template -- ./my-starter`
-- `npm run validate -- ./templates/openfooter-template.csv`
-- `npm run generate`
-- `npm run demo`
+In `app/layout.tsx`, add the IIFE script and use `<open-footer ... />`.
 
 ## Troubleshooting
 | Problem | Likely Cause | Fix |
@@ -121,13 +131,26 @@ In `app/layout.tsx` use a script tag for IIFE bundle and render `<open-footer ..
 | Some links missing | `is_active` is false | Set `is_active` to `true` |
 | Link blocked | Unsafe URL | Use `https`, `mailto`, or `tel` |
 
+## Publishing to npm
+
+```bash
+npm install
+npm run typecheck
+npm run build
+npm run pack:check
+npm login
+npm publish
+```
+
+- `npm pack --dry-run` confirms which files will be published.
+- `prepublishOnly` runs typecheck + build before publish.
+- After publishing, jsDelivr and unpkg can serve OpenFooter from npm package versions.
+- Use pinned versions such as `openfooter@0.1.0` for production embeds.
+
+Detailed checklist: `docs/PUBLISHING.md`.
+
 ## Security Notes
 Unsafe URLs (`javascript:`, `data:text/html`, empty URLs) are blocked, and labels/descriptions are escaped.
-
-## Publishing to npm/CDN
-1. `npm run build`
-2. `npm publish --access public`
-3. Use jsDelivr/unpkg snippets above.
 
 ## Contributing
 See `CONTRIBUTING.md`.
