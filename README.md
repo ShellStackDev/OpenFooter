@@ -94,8 +94,9 @@ npm install openfooter
 ## Web Component Example
 ```html
 <open-footer
-  source="google-sheet-csv"
-  url="https://docs.google.com/spreadsheets/d/e/.../pub?output=csv"
+  source="google-sheet"
+  url="https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit?usp=sharing"
+  sheet-gid="0"
   brand-name="TurtlesStudios"
   brand-tagline="Music, tech, projects, and creative experiments"
   theme="dark"
@@ -120,12 +121,12 @@ OpenFooter.render('#brand-footer', {
 ## WordPress Example
 ```html
 <script src="https://cdn.jsdelivr.net/npm/openfooter@0.1.0/dist/openfooter.iife.min.js"></script>
-<open-footer source="google-sheet-csv" url="YOUR_CSV_URL" brand-name="Your Brand"></open-footer>
+<open-footer source="google-sheet" url="https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit?usp=sharing" sheet-gid="0" brand-name="Your Brand"></open-footer>
 ```
 
 ## Webflow Example
 ```html
-<open-footer source="google-sheet-csv" url="YOUR_CSV_URL" brand-name="Your Brand"></open-footer>
+<open-footer source="google-sheet" url="https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit?usp=sharing" sheet-gid="0" brand-name="Your Brand"></open-footer>
 ```
 
 ## Plain HTML Example
@@ -322,3 +323,11 @@ open-footer {
 ```
 
 See `examples/themes/` for `light`, `dark`, `minimal`, `auto`, and `custom-colors` demos.
+
+
+| Problem | Likely Cause | Fix |
+|---|---|---|
+| 307 redirect then 400 Bad Request | Using the wrong export endpoint | OpenFooter uses `gviz/tq?tqx=out:csv` internally |
+| Response looks like Google Sheets HTML | Sheet is not public/exportable | Share as “Anyone with the link can view” or publish to web |
+| No links appear | Wrong tab/gid | Check the sheet tab gid |
+| Links appear multiple times or URL requested repeatedly | Duplicate lifecycle fetches | Use request dedupe and render guards |
