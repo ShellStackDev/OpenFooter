@@ -3,46 +3,30 @@
   <head>
     <meta charset="UTF-8" />
     <title>OpenFooter Local Inline Test</title>
+    <link rel="stylesheet" href="../shared/example-page.css" />
   </head>
   <body>
-    <h1>OpenFooter Local Inline Test</h1>
+    <main class="demo-page">
+      <h1>OpenFooter Local Inline Test</h1>
+      <p>Demonstrates brand title, tagline, message, image, and category columns from inline JSON.</p>
+    </main>
     <script src="../../dist/openfooter.iife.min.js"></script>
-
     <open-footer id="footer"></open-footer>
-
     <script>
       document.querySelector('#footer').config = {
         source: 'inline-json',
         brandName: 'OpenFooter Local Test',
         brandTagline: 'Testing inline configuration locally',
+        brandMessage: 'This local example demonstrates brand titles, descriptions, category columns, and inline JSON configuration.',
+        brandImageUrl: 'https://placehold.co/96x96?text=OF',
+        brandImageAlt: 'OpenFooter local test logo',
+        brandImageShape: 'rounded',
         theme: 'dark',
         layout: 'columns',
         links: [
-          {
-            label: 'GitHub',
-            url: 'https://github.com/prlaclede/OpenFooter',
-            type: 'social',
-            category: 'Developer',
-            priority: 1,
-            isActive: true
-          },
-          {
-            label: 'YouTube',
-            url: 'https://youtube.com/@yourhandle',
-            type: 'social',
-            category: 'Social',
-            priority: 2,
-            isActive: true
-          },
-          {
-            label: 'Example Project',
-            url: 'https://example.com',
-            type: 'project',
-            category: 'Projects',
-            priority: 10,
-            isActive: true,
-            isFeatured: true
-          }
+          { label: 'GitHub', url: 'https://github.com/prlaclede/OpenFooter', type: 'social', category: 'Developer', priority: 1, isActive: true },
+          { label: 'YouTube', url: 'https://youtube.com/@yourhandle', type: 'social', category: 'Social', priority: 2, isActive: true },
+          { label: 'Example Project', url: 'https://example.com', type: 'project', category: 'Projects', priority: 10, isActive: true, isFeatured: true }
         ]
       };
       document.querySelector('#footer').refresh();

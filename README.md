@@ -284,3 +284,41 @@ meta,brandImageShape,rounded,,,,,,,,,,
 ```
 
 Metadata rows are optional and are not rendered as links.
+
+## Running Examples Locally
+
+```bash
+npm install
+npm run build
+npm run serve:examples
+```
+
+Then open:
+
+```txt
+http://localhost:5173/examples/
+```
+
+## Layout Examples
+
+See `examples/layouts/` and `examples/index.html`. Column-based layouts generate sections from each link's `category` field (fallback: `type`, then `Links`).
+
+## Themes and Custom Colors
+
+Use built-in themes:
+
+```html
+<open-footer theme="dark"></open-footer>
+```
+
+Or customize with CSS variables:
+
+```css
+open-footer {
+  --of-bg: #111827;
+  --of-text: #f9fafb;
+  --of-link: #60a5fa;
+}
+```
+
+See `examples/themes/` for `light`, `dark`, `minimal`, `auto`, and `custom-colors` demos.

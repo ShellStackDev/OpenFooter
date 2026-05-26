@@ -48,7 +48,7 @@ export const buildFooterHtml = (config: OpenFooterConfig, links: OpenFooterLink[
     simple: `<div class="layout simple">${brand}<nav class="inline-links">${normalized.map((l) => `<a href="${escapeHtml(l.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(l.label)}</a>`).join('')}</nav></div>`,
     centered: `<div class="layout centered">${brand}<nav class="inline-links centered">${normalized.map((l) => `<a href="${escapeHtml(l.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(l.label)}</a>`).join('')}</nav></div>`,
     social: `<div class="layout social">${brand}${socialRow}<div class="grid columns">${sections}</div></div>`,
-    columns: `<div class="layout columns"><div class="grid columns">${sections}</div></div>`,
+    columns: `<div class="layout columns">${brand}<div class="grid columns">${sections}</div></div>`,
     'columns-brand': `<div class="layout columns-brand">${brand}<div class="grid columns">${sections}</div></div>`,
     newsletter: `<div class="layout newsletter">${brand}<div class="grid columns">${sections}</div>${newsletter}</div>`,
     compact: `<div class="layout compact">${brand}<nav class="inline-links">${normalized.map((l) => `<a href="${escapeHtml(l.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(l.label)}</a>`).join('')}</nav></div>`
