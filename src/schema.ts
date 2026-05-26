@@ -6,6 +6,16 @@ export type OpenFooterLinkType =
   | 'contact'
   | 'custom';
 
+export type OpenFooterLayout =
+  | 'simple'
+  | 'centered'
+  | 'social'
+  | 'columns'
+  | 'columns-brand'
+  | 'newsletter'
+  | 'compact'
+  | 'full';
+
 export type OpenFooterLink = {
   label: string;
   url: string;
@@ -21,14 +31,23 @@ export type OpenFooterLink = {
 };
 
 export type OpenFooterConfig = {
-  source?: 'inline-json' | 'remote-json' | 'google-sheet-csv';
+  source?: 'inline-json' | 'remote-json' | 'google-sheet-csv' | 'google-sheet' | 'google-sheets';
   url?: string;
+  sheetGid?: string;
   links?: OpenFooterLink[];
   brandName?: string;
   brandTagline?: string;
   copyrightName?: string;
   theme?: 'light' | 'dark' | 'minimal' | 'auto';
-  layout?: 'compact' | 'full' | 'columns';
+  layout?: OpenFooterLayout;
   showPoweredBy?: boolean;
   cacheTtlSeconds?: number;
+  newsletter?: {
+    enabled?: boolean;
+    title?: string;
+    description?: string;
+    placeholder?: string;
+    buttonLabel?: string;
+    actionUrl?: string;
+  };
 };

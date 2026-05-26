@@ -8,8 +8,8 @@ OpenFooter is a framework-agnostic, embeddable Web Component + vanilla JS librar
 <script src="https://cdn.jsdelivr.net/npm/openfooter@0.1.0/dist/openfooter.iife.min.js"></script>
 
 <open-footer
-  source="google-sheet-csv"
-  url="YOUR_PUBLISHED_GOOGLE_SHEET_CSV_URL"
+  source="google-sheet"
+  url="https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit?usp=sharing"
   brand-name="Your Brand"
   theme="dark">
 </open-footer>
@@ -23,8 +23,8 @@ jsDelivr (recommended with pinned versions in production):
 <script src="https://cdn.jsdelivr.net/npm/openfooter@0.1.0/dist/openfooter.iife.min.js"></script>
 
 <open-footer
-  source="google-sheet-csv"
-  url="YOUR_PUBLISHED_GOOGLE_SHEET_CSV_URL"
+  source="google-sheet"
+  url="https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit?usp=sharing"
   brand-name="Your Brand"
   theme="dark"
   layout="columns">
@@ -38,6 +38,19 @@ unpkg:
 ```
 
 Unpinned URLs (without `@0.1.0`) load the latest package version and may change unexpectedly. Pin versions for production stability.
+
+- You can paste a normal Google Sheets share/edit URL.
+- OpenFooter automatically converts share/edit URLs to CSV export URLs.
+- The sheet must be public/viewable or published to the web.
+- If using multiple tabs, pass `sheet-gid`.
+
+```html
+<open-footer
+  source="google-sheet"
+  url="https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit?usp=sharing"
+  sheet-gid="0">
+</open-footer>
+```
 
 ## 2-Minute Setup
 1. Copy `templates/openfooter-template.csv` into Google Sheets.
@@ -205,6 +218,36 @@ This runs:
 | Footer does not render | Build file missing | Run `npm run build` |
 | `OpenFooter is not defined` | Script path is wrong | Confirm `../../dist/openfooter.iife.min.js` exists |
 | Local JSON does not load | Browser blocked `file://` fetch | Run `npm run serve:examples` |
-| Google Sheet links do not show | Sheet is not published as CSV | Publish to web as CSV |
+| Google Sheet links do not show | Sheet is private or not CSV-viewable | Share publicly/view-only or publish to web as CSV |
 | Changes do not appear | Cache is active | Lower `cacheTtlSeconds` or clear localStorage |
 | Custom element already defined | Script loaded twice | Load OpenFooter once per page |
+
+## Footer Layouts
+
+OpenFooter supports these layout presets:
+- `simple`
+- `centered`
+- `social`
+- `columns`
+- `columns-brand`
+- `newsletter`
+- `compact`
+
+`columns`, `columns-brand`, and `newsletter` automatically generate columns from each link's `category` field (fallback: `type`, then `Links`).
+
+Use `newsletter` with optional config:
+
+```js
+{
+  newsletter: {
+    enabled: true,
+    title: 'Stay up to date',
+    description: 'Monthly product updates.',
+    placeholder: 'Email address',
+    buttonLabel: 'Subscribe',
+    actionUrl: 'https://example.com/newsletter'
+  }
+}
+```
+
+Layout examples are available in `examples/layouts/`.

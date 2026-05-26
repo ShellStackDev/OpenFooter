@@ -6,13 +6,15 @@
   </head>
   <body>
     <h1>OpenFooter Google Sheet Test</h1>
-    <p>Publish your Google Sheet tab to the web as CSV first, then paste its URL below.</p>
+    <p>Paste a normal Google Sheets share/edit URL. OpenFooter will convert it to a CSV export URL.</p>
+    <p>The sheet must be public/viewable or published to web as CSV.</p>
 
     <script src="../../dist/openfooter.iife.min.js"></script>
 
     <open-footer
-      source="google-sheet-csv"
-      url="PASTE_YOUR_PUBLISHED_GOOGLE_SHEET_CSV_URL_HERE"
+      source="google-sheet"
+      url="https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit?usp=sharing"
+      sheet-gid="0"
       brand-name="OpenFooter Google Sheet Test"
       theme="dark"
       layout="columns">
