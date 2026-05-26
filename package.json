@@ -37,7 +37,10 @@
     "validate": "node scripts/validate-config.ts",
     "generate": "node scripts/generate-embed-code.ts",
     "create-template": "node scripts/create-template.ts",
-    "demo": "vite --open examples/plain-html/index.html"
+    "demo": "vite --open examples/plain-html/index.html",
+    "serve:examples": "vite --host 0.0.0.0",
+    "smoke:test": "node scripts/smoke-test.mjs",
+    "test:local": "npm run typecheck && npm run build && npm run smoke:test && npm run pack:check"
   },
   "keywords": [
     "footer",

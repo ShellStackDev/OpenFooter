@@ -154,3 +154,57 @@ Unsafe URLs (`javascript:`, `data:text/html`, empty URLs) are blocked, and label
 
 ## Contributing
 See `CONTRIBUTING.md`.
+
+
+## Local Development
+
+```bash
+git clone https://github.com/prlaclede/OpenFooter.git
+cd OpenFooter
+npm install
+npm run build
+npm run serve:examples
+```
+
+Then open example pages through the local server (do not use `file://` for fetch-based examples).
+
+## Testing the Local CDN Bundle
+
+```bash
+npm run build
+npm run serve:examples
+```
+
+Open:
+
+```txt
+examples/local-inline/index.html
+examples/local-json/index.html
+examples/cdn-local/index.html
+examples/google-sheet/index.html
+```
+
+`examples/cdn-local/index.html` uses `dist/openfooter.iife.min.js`, which is the same file path expected from npm/CDN delivery after publishing.
+
+## Local Verification Before Publishing
+
+```bash
+npm run test:local
+```
+
+This runs:
+- TypeScript type checking
+- Production build
+- Smoke checks for build artifacts/examples
+- npm package dry run (`npm pack --dry-run`)
+
+## Local Troubleshooting
+
+| Issue | Cause | Fix |
+|---|---|---|
+| Footer does not render | Build file missing | Run `npm run build` |
+| `OpenFooter is not defined` | Script path is wrong | Confirm `../../dist/openfooter.iife.min.js` exists |
+| Local JSON does not load | Browser blocked `file://` fetch | Run `npm run serve:examples` |
+| Google Sheet links do not show | Sheet is not published as CSV | Publish to web as CSV |
+| Changes do not appear | Cache is active | Lower `cacheTtlSeconds` or clear localStorage |
+| Custom element already defined | Script loaded twice | Load OpenFooter once per page |
