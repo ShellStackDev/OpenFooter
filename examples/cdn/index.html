@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>OpenFooter CDN Example</title>
+  </head>
+  <body>
+    <main>
+      <h1>OpenFooter CDN Example</h1>
+      <p>This page demonstrates loading OpenFooter from a CDN.</p>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/openfooter@0.1.0/dist/openfooter.iife.min.js"></script>
+
+    <open-footer
+      source="remote-json"
+      url="./openfooter.links.json"
+      brand-name="OpenFooter Demo"
+      theme="dark"
+      layout="columns">
+    </open-footer>
+  </body>
+</html>
