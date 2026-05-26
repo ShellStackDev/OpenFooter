@@ -1,0 +1,12 @@
+type,label,url,icon,category,priority,is_active,is_featured,description,start_date,end_date
+social,YouTube,https://youtube.com/@yourhandle,youtube,Social,1,true,false,Main YouTube channel,,
+social,TikTok,https://tiktok.com/@yourhandle,tiktok,Social,2,true,false,Short-form videos,,
+social,Instagram,https://instagram.com/yourhandle,instagram,Social,3,true,false,Photos and reels,,
+social,X / Twitter,https://x.com/yourhandle,x,Social,4,true,false,Updates and posts,,
+social,GitHub,https://github.com/yourhandle,github,Developer,5,true,false,Open-source projects,,
+social,LinkedIn,https://linkedin.com/in/yourhandle,linkedin,Professional,6,true,false,Professional profile,,
+project,Main Website,https://example.com,link,Projects,10,true,true,Primary website,,
+project,Newsletter,https://example.com/newsletter,mail,Projects,11,true,false,Subscribe for updates,,
+contact,Email,mailto:hello@example.com,mail,Contact,20,true,false,Contact email,,
+legal,Privacy Policy,https://example.com/privacy,shield,Legal,90,true,false,Privacy policy,,
+legal,Terms,https://example.com/terms,file-text,Legal,91,true,false,Terms of service,,
