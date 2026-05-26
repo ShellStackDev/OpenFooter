@@ -1,0 +1,4 @@
+[
+  {"label":"GitHub","url":"https://github.com","type":"project","priority":1,"isActive":true},
+  {"label":"Privacy","url":"/privacy","type":"legal","priority":2,"isActive":true}
+]
