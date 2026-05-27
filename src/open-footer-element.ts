@@ -1,15 +1,12 @@
-import type { OpenFooterConfig, OpenFooterLink } from './schema';
+import type { OpenFooterConfig } from './schema';
 import { getStyles } from './styles';
-import { getInlineLinks } from './adapters/inline-json';
-import { getRemoteJsonLinks } from './adapters/remote-json';
 import { getGoogleSheetData } from './adapters/google-sheet-csv';
 import { buildFooterHtml } from './render';
-import { isGoogleSheetSource } from './utils/google-sheet';
 
-const defaults: OpenFooterConfig = { source: 'inline-json', theme: 'dark', layout: 'compact', cacheTtlSeconds: 300, brandImageShape: 'rounded' };
+const defaults: OpenFooterConfig = { theme: 'dark', layout: 'columns-brand', cacheTtlSeconds: 0, brandImageShape: 'rounded' };
 
 export class OpenFooterElement extends HTMLElement {
-  static get observedAttributes() { return ['source','url','sheet-gid','cache-ttl-seconds','disable-cache','brand-name','brand-tagline','brand-message','brand-image-url','brand-image-alt','brand-image-shape','theme','layout']; }
+  static get observedAttributes() { return ['url','sheet-gid','cache-ttl-seconds','disable-cache','brand-name','brand-tagline','brand-message','brand-image-url','brand-image-alt','brand-image-shape','copyright-name','show-powered-by','theme','layout']; }
   private root = this.attachShadow({ mode: 'open' });
   config: OpenFooterConfig = { ...defaults };
   private hasConnected = false;
@@ -21,7 +18,6 @@ export class OpenFooterElement extends HTMLElement {
 
   private syncAttributes() {
     this.config = { ...this.config,
-      source: (this.getAttribute('source') as OpenFooterConfig['source']) ?? this.config.source,
       url: this.getAttribute('url') ?? this.config.url,
       sheetGid: this.getAttribute('sheet-gid') ?? this.config.sheetGid,
       cacheTtlSeconds: this.getAttribute('cache-ttl-seconds') != null ? Number(this.getAttribute('cache-ttl-seconds')) : this.config.cacheTtlSeconds,
@@ -32,6 +28,8 @@ export class OpenFooterElement extends HTMLElement {
       brandImageUrl: this.getAttribute('brand-image-url') ?? this.config.brandImageUrl,
       brandImageAlt: this.getAttribute('brand-image-alt') ?? this.config.brandImageAlt,
       brandImageShape: (this.getAttribute('brand-image-shape') as OpenFooterConfig['brandImageShape']) ?? this.config.brandImageShape,
+      copyrightName: this.getAttribute('copyright-name') ?? this.config.copyrightName,
+      showPoweredBy: this.getAttribute('show-powered-by') != null ? this.getAttribute('show-powered-by') !== 'false' : this.config.showPoweredBy,
       theme: (this.getAttribute('theme') as OpenFooterConfig['theme']) ?? this.config.theme,
       layout: (this.getAttribute('layout') as OpenFooterConfig['layout']) ?? this.config.layout };
   }
@@ -39,20 +37,13 @@ export class OpenFooterElement extends HTMLElement {
   private requestRender(force: boolean) { if (this.renderQueued) return; this.renderQueued = true; queueMicrotask(() => { this.renderQueued = false; void this.refresh(force); }); }
 
   async refresh(force = true) {
-    const sourceKey = isGoogleSheetSource(this.config.source) ? 'google-sheet-csv' : (this.config.source ?? 'inline-json');
-    const requestKey = `${sourceKey}:${this.config.url ?? ''}:${this.config.sheetGid ?? ''}`;
+    const requestKey = `${this.config.url ?? ''}:${this.config.sheetGid ?? ''}`;
     if (!force && this.lastRequestKey === requestKey) return;
 
-    let links: OpenFooterLink[] = [];
-    let mergedConfig: OpenFooterConfig = { ...this.config };
-    if (sourceKey === 'remote-json') links = await getRemoteJsonLinks(mergedConfig, force);
-    else if (sourceKey === 'google-sheet-csv') {
-      const data = await getGoogleSheetData(mergedConfig, force);
-      mergedConfig = { ...data.config, ...mergedConfig };
-      links = data.links;
-    } else links = getInlineLinks(mergedConfig);
+    const data = await getGoogleSheetData({ ...this.config, cacheTtlSeconds: this.config.cacheTtlSeconds ?? 0 }, force);
+    const mergedConfig: OpenFooterConfig = { ...data.config, ...this.config };
 
     this.lastRequestKey = requestKey;
-    this.root.innerHTML = `<style>${getStyles()}</style>${buildFooterHtml(mergedConfig, links)}`;
+    this.root.innerHTML = `<style>${getStyles()}</style>${buildFooterHtml(mergedConfig, data.links)}`;
   }
 }

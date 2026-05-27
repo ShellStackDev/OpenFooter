@@ -1,21 +1,5 @@
-export type OpenFooterLinkType =
-  | 'social'
-  | 'project'
-  | 'legal'
-  | 'featured'
-  | 'contact'
-  | 'custom';
-
-export type OpenFooterLayout =
-  | 'simple'
-  | 'centered'
-  | 'social'
-  | 'columns'
-  | 'columns-brand'
-  | 'newsletter'
-  | 'compact';
-
-
+export type OpenFooterLinkType = 'social' | 'project' | 'legal' | 'featured' | 'contact' | 'custom';
+export type OpenFooterLayout = 'simple' | 'centered' | 'social' | 'columns' | 'columns-brand' | 'newsletter' | 'compact';
 export type OpenFooterBrandImageShape = 'circle' | 'rounded' | 'square';
 
 export type OpenFooterLink = {
@@ -33,10 +17,8 @@ export type OpenFooterLink = {
 };
 
 export type OpenFooterConfig = {
-  source?: 'inline-json' | 'remote-json' | 'google-sheet-csv' | 'google-sheet' | 'google-sheets';
   url?: string;
   sheetGid?: string | number;
-  links?: OpenFooterLink[];
   brandName?: string;
   brandTagline?: string;
   brandMessage?: string;
