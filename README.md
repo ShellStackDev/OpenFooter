@@ -89,3 +89,16 @@ npm run build
 npm run pack:check
 npm publish
 ```
+
+
+## Releasing / Publishing
+
+OpenFooter uses GitHub Actions to publish tagged releases to npm.
+
+```bash
+npm version patch
+git push origin main
+git push origin --tags
+```
+
+See `docs/PUBLISHING.md` for the full process.
