@@ -1,8 +1,3 @@
-export const GOOGLE_SHEET_SOURCES = ['google-sheet', 'google-sheets', 'google-sheet-csv'] as const;
-
-export const isGoogleSheetSource = (source?: string): boolean =>
-  GOOGLE_SHEET_SOURCES.includes((source ?? '').toLowerCase() as (typeof GOOGLE_SHEET_SOURCES)[number]);
-
 export const normalizeGoogleSheetUrl = (url: string, gid?: string | number): string => {
   let parsed: URL;
   try {
@@ -29,6 +24,5 @@ export const normalizeGoogleSheetUrl = (url: string, gid?: string | number): str
   const resolvedGid = String(gid ?? queryGid ?? hashGid ?? '0');
 
   if (gvizMatch && gid === undefined) return parsed.toString();
-
   return `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&gid=${encodeURIComponent(resolvedGid)}`;
 };
