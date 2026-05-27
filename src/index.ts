@@ -8,7 +8,7 @@ const resolveEl = (selectorOrElement?: string | Element | null) => {
 };
 
 export const OpenFooter = {
-  version: '0.1.0',
+  version: '0.1.2',
   refresh(selectorOrElement?: string | Element) {
     const target = resolveEl(selectorOrElement);
     if (target instanceof OpenFooterElement) void target.refresh(true);
