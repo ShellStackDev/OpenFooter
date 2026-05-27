@@ -10,5 +10,5 @@ const links=[
 {label:'Blog',url:'https://example.com/blog',type:'custom',category:'Content',priority:20,isActive:true},
 {label:'Privacy',url:'https://example.com/privacy',type:'legal',category:'Legal',priority:90,isActive:true}
 ];
-layouts.forEach((layout)=>{const h=document.createElement('h2');h.textContent=layout;document.body.appendChild(h);const el=document.createElement('open-footer');el.config={source:'inline-json',brandName:'Layout Demo',brandTagline:'All layouts',theme:'dark',layout,newsletter:{enabled:true},links};document.body.appendChild(el);});
+layouts.forEach((layout)=>{const h=document.createElement('h2');h.textContent=layout;document.body.appendChild(h);const el=document.createElement('open-footer');el.config={source:'inline-json',brandName:'Layout Demo',brandTagline:'All layouts',brandMessage:'Brand image + profile demo across all layouts.',brandImageUrl:'https://placehold.co/96x96?text=OF',brandImageAlt:'OpenFooter demo logo',brandImageShape:'rounded',theme:'dark',layout,newsletter:{enabled:true},links};document.body.appendChild(el);});
 </script></body></html>

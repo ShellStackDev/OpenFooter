@@ -1,5 +1,6 @@
 window.OpenFooterExampleConfig = {
   source: 'inline-json',
+  layout: 'columns-brand',
   brandName: 'OpenFooter Demo',
   brandTagline: 'Unified footers for every project',
   brandMessage: 'A lightweight, open-source footer component for sharing your socials, projects, contact links, and brand profile across multiple websites.',

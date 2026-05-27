@@ -360,3 +360,121 @@ To force no cache:
 |---|---|---|
 | Google Sheet updates take too long to appear | Browser/CDN/local cache | Google Sheets uses cache-busting by default; also try `disable-cache="true"` |
 | Refresh still shows old data | Google’s backend may delay export updates | Wait briefly, reload, or verify the sheet’s CSV export URL directly |
+
+## Brand Image / Logo
+
+OpenFooter supports a brand image/logo/icon in the footer profile block alongside:
+`brandName`, `brandTagline`, `brandMessage`, `brandImageUrl`, `brandImageAlt`, and `brandImageShape`.
+
+### HTML Attribute Example
+
+```html
+<open-footer
+  source="google-sheet"
+  url="https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit?usp=sharing"
+  brand-name="TurtlesStudios"
+  brand-tagline="Music, tech, gaming, and creative projects"
+  brand-message="Music, gear reviews, dev experiments, gaming, and creative builds."
+  brand-image-url="https://example.com/logo.png"
+  brand-image-alt="TurtlesStudios logo"
+  brand-image-shape="rounded"
+  theme="dark"
+  layout="columns-brand">
+</open-footer>
+```
+
+### Inline JSON Example
+
+```html
+<open-footer id="footer"></open-footer>
+<script>
+  document.querySelector('#footer').config = {
+    source: 'inline-json',
+    brandName: 'TurtlesStudios',
+    brandTagline: 'Music, tech, gaming, and creative projects',
+    brandMessage: 'Music, gear reviews, dev experiments, gaming, and creative builds.',
+    brandImageUrl: 'https://example.com/logo.png',
+    brandImageAlt: 'TurtlesStudios logo',
+    brandImageShape: 'rounded',
+    theme: 'dark',
+    layout: 'columns-brand',
+    links: []
+  };
+</script>
+```
+
+### Google Sheet / CSV Example
+
+```csv
+type,key,value,label,url,icon,category,priority,is_active,is_featured,description,start_date,end_date
+meta,brandName,TurtlesStudios,,,,,,,,,,
+meta,brandTagline,"Music, tech, gaming, and creative projects",,,,,,,,,,
+meta,brandMessage,"Music, gear reviews, dev experiments, gaming, and creative builds.",,,,,,,,,,
+meta,brandImageUrl,https://example.com/logo.png,,,,,,,,,,
+meta,brandImageAlt,TurtlesStudios logo,,,,,,,,,,
+meta,brandImageShape,rounded,,,,,,,,,,
+social,,,YouTube,https://youtube.com/@yourhandle,youtube,Social,1,true,false,Main YouTube channel,,
+```
+
+### Remote JSON Example
+
+```json
+{
+  "brandName": "TurtlesStudios",
+  "brandTagline": "Music, tech, gaming, and creative projects",
+  "brandMessage": "Music, gear reviews, dev experiments, gaming, and creative builds.",
+  "brandImageUrl": "https://example.com/logo.png",
+  "brandImageAlt": "TurtlesStudios logo",
+  "brandImageShape": "rounded",
+  "theme": "dark",
+  "layout": "columns-brand",
+  "links": [
+    {
+      "label": "YouTube",
+      "url": "https://youtube.com/@yourhandle",
+      "type": "social",
+      "category": "Social",
+      "priority": 1,
+      "isActive": true
+    }
+  ]
+}
+```
+
+### Brand Image Shapes
+
+| Value | Result |
+|---|---|
+| `rounded` | Rounded rectangle/corners |
+| `circle` | Circular avatar/logo |
+| `square` | Square image with no rounding |
+
+```html
+<open-footer brand-image-url="https://example.com/logo.png" brand-image-shape="circle"></open-footer>
+```
+
+### Image URL Guidance
+
+- Use a public image URL.
+- Prefer square images like `512x512`, `256x256`, or `96x96`.
+- Recommended formats: PNG, JPG/JPEG, WebP.
+- SVG works only from trusted sources.
+- Do not use private Google Drive image URLs unless publicly accessible.
+- Do not use local file paths for production CDN embeds.
+- If image does not appear, open the image URL directly in a private/incognito window.
+
+### Validation / Security
+
+OpenFooter URL safety checks allow:
+- `https:`
+- `http:`
+- `mailto:`
+- `tel:`
+- `data:image/png`
+- `data:image/jpeg`
+- `data:image/webp`
+- `data:image/svg+xml`
+
+And block:
+- `javascript:`
+- `data:text/html`
