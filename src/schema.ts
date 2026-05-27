@@ -31,6 +31,10 @@ export type OpenFooterConfig = {
   showPoweredBy?: boolean;
   cacheTtlSeconds?: number;
   disableCache?: boolean;
+  primaryColor?: string;
+  accentColor?: string;
+  accentColor2?: string;
+  backgroundStyle?: 'solid' | 'gradient' | 'mesh' | 'minimal';
   newsletter?: {
     enabled?: boolean;
     title?: string;

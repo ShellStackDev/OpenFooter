@@ -1,6 +1,6 @@
 {
   "name": "openfooter",
-  "version": "0.1.2",
+  "version": "0.1.0",
   "description": "A framework-agnostic embeddable footer Web Component for unified links, socials, and project promotion.",
   "type": "module",
   "homepage": "https://github.com/prlaclede/OpenFooter#readme",
@@ -63,6 +63,7 @@
     "vite-plugin-dts": "^4.5.4"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "provenance": true
   }
 }

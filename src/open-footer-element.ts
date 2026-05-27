@@ -6,7 +6,7 @@ import { buildFooterHtml } from './render';
 const defaults: OpenFooterConfig = { theme: 'dark', layout: 'columns-brand', cacheTtlSeconds: 0, brandImageShape: 'rounded' };
 
 export class OpenFooterElement extends HTMLElement {
-  static get observedAttributes() { return ['url','sheet-gid','cache-ttl-seconds','disable-cache','brand-name','brand-tagline','brand-message','brand-image-url','brand-image-alt','brand-image-shape','copyright-name','show-powered-by','theme','layout']; }
+  static get observedAttributes() { return ['url','sheet-gid','cache-ttl-seconds','disable-cache','brand-name','brand-tagline','brand-message','brand-image-url','brand-image-alt','brand-image-shape','copyright-name','show-powered-by','theme','layout','primary-color','accent-color','accent-color-2','background-style']; }
   private root = this.attachShadow({ mode: 'open' });
   config: OpenFooterConfig = { ...defaults };
   private hasConnected = false;
@@ -31,7 +31,11 @@ export class OpenFooterElement extends HTMLElement {
       copyrightName: this.getAttribute('copyright-name') ?? this.config.copyrightName,
       showPoweredBy: this.getAttribute('show-powered-by') != null ? this.getAttribute('show-powered-by') !== 'false' : this.config.showPoweredBy,
       theme: (this.getAttribute('theme') as OpenFooterConfig['theme']) ?? this.config.theme,
-      layout: (this.getAttribute('layout') as OpenFooterConfig['layout']) ?? this.config.layout };
+      layout: (this.getAttribute('layout') as OpenFooterConfig['layout']) ?? this.config.layout,
+      primaryColor: this.getAttribute('primary-color') ?? this.config.primaryColor,
+      accentColor: this.getAttribute('accent-color') ?? this.config.accentColor,
+      accentColor2: this.getAttribute('accent-color-2') ?? this.config.accentColor2,
+      backgroundStyle: (this.getAttribute('background-style') as OpenFooterConfig['backgroundStyle']) ?? this.config.backgroundStyle };
   }
 
   private requestRender(force: boolean) { if (this.renderQueued) return; this.renderQueued = true; queueMicrotask(() => { this.renderQueued = false; void this.refresh(force); }); }

@@ -33,6 +33,18 @@ export const renderBrandBlock = (config: OpenFooterConfig): string => {
 const renderLinks = (items: OpenFooterLink[]) => `<ul>${items.map((l) => `<li><a href="${escapeHtml(l.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(l.label)}</a>${l.description ? `<div class="small">${escapeHtml(l.description)}</div>` : ''}</li>`).join('')}</ul>`;
 const renderColumns = (grouped: Record<string, OpenFooterLink[]>) => Object.entries(grouped).map(([name, items]) => `<section><h4>${escapeHtml(name)}</h4>${renderLinks(items)}</section>`).join('');
 
+
+const resolveVisualVars = (config: OpenFooterConfig): string => {
+  const p = config.primaryColor?.trim();
+  const a = (config.accentColor || config.primaryColor)?.trim();
+  const a2 = (config.accentColor2 || config.accentColor || config.primaryColor)?.trim();
+  const vars = [];
+  if (p) vars.push(`--of-primary-color:${escapeHtml(p)}`);
+  if (a) vars.push(`--of-accent-color:${escapeHtml(a)}`);
+  if (a2) vars.push(`--of-accent-color-2:${escapeHtml(a2)}`);
+  return vars.length ? ` style="${vars.join(';')}"` : '';
+};
+
 export const buildFooterHtml = (config: OpenFooterConfig, links: OpenFooterLink[]): string => {
   const normalized = normalizeLinks(links);
   const grouped = groupLinksByCategory(links);
@@ -54,5 +66,7 @@ export const buildFooterHtml = (config: OpenFooterConfig, links: OpenFooterLink[
     compact: `<div class="layout compact">${brand}<nav class="inline-links">${normalized.map((l) => `<a href="${escapeHtml(l.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(l.label)}</a>`).join('')}</nav></div>`
   };
 
-  return `<div class="wrap"><div class="inner">${body[layout] ?? body.compact}<div class="small copyright">© ${new Date().getFullYear()} ${escapeHtml(config.copyrightName ?? config.brandName ?? 'OpenFooter')}${config.showPoweredBy === false ? '' : ` • <a href="https://github.com" target="_blank" rel="noopener noreferrer">Powered by OpenFooter</a>`}</div></div></div>`;
+  const visualVars = resolveVisualVars(config);
+
+  return `<div class="wrap"${visualVars}><div class="inner">${body[layout] ?? body.compact}<div class="small copyright">© ${new Date().getFullYear()} ${escapeHtml(config.copyrightName ?? config.brandName ?? 'OpenFooter')}${config.showPoweredBy === false ? '' : ` • <a href="https://github.com" target="_blank" rel="noopener noreferrer">Powered by OpenFooter</a>`}</div></div></div>`;
 };

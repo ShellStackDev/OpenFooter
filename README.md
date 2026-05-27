@@ -102,3 +102,25 @@ git push origin --tags
 ```
 
 See `docs/PUBLISHING.md` for the full process.
+
+
+## Themes and Colors
+
+Built-in themes:
+
+```html
+<open-footer theme="dark"></open-footer>
+```
+
+Custom colors:
+
+```html
+<open-footer primary-color="#2563eb" accent-color="#7c3aed" accent-color-2="#06b6d4"></open-footer>
+```
+
+Background styles:
+
+```html
+<open-footer background-style="gradient"></open-footer>
+<open-footer background-style="mesh"></open-footer>
+```
