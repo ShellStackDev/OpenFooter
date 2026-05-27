@@ -331,3 +331,32 @@ See `examples/themes/` for `light`, `dark`, `minimal`, `auto`, and `custom-color
 | Response looks like Google Sheets HTML | Sheet is not public/exportable | Share as “Anyone with the link can view” or publish to web |
 | No links appear | Wrong tab/gid | Check the sheet tab gid |
 | Links appear multiple times or URL requested repeatedly | Duplicate lifecycle fetches | Use request dedupe and render guards |
+
+### Google Sheets and Caching
+
+OpenFooter disables local caching for Google Sheets by default so changes in your sheet appear quickly.
+
+If you want to cache Google Sheets responses anyway:
+
+```html
+<open-footer
+  source="google-sheet"
+  url="https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit?usp=sharing"
+  cache-ttl-seconds="300">
+</open-footer>
+```
+
+To force no cache:
+
+```html
+<open-footer
+  source="google-sheet"
+  url="https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit?usp=sharing"
+  disable-cache="true">
+</open-footer>
+```
+
+| Issue | Cause | Fix |
+|---|---|---|
+| Google Sheet updates take too long to appear | Browser/CDN/local cache | Google Sheets uses cache-busting by default; also try `disable-cache="true"` |
+| Refresh still shows old data | Google’s backend may delay export updates | Wait briefly, reload, or verify the sheet’s CSV export URL directly |

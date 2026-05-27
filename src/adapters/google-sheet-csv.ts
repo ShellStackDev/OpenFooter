@@ -6,54 +6,50 @@ import { normalizeGoogleSheetUrl } from '../utils/google-sheet';
 const inFlightDataRequests = new Map<string, Promise<{ config: Partial<OpenFooterConfig>; links: OpenFooterLink[] }>>();
 const inFlightTextRequests = new Map<string, Promise<string>>();
 
-const fetchTextOnce = async (url: string): Promise<string> => {
-  const existing = inFlightTextRequests.get(url);
+const withCacheBust = (url: string): string => {
+  const u = new URL(url);
+  u.searchParams.set('_of_cache_bust', String(Date.now()));
+  return u.toString();
+};
+
+const fetchTextOnce = async (dedupeKeyUrl: string, requestUrl: string): Promise<string> => {
+  const existing = inFlightTextRequests.get(dedupeKeyUrl);
   if (existing) return existing;
 
-  const promise = fetch(url, { redirect: 'follow' })
+  const promise = fetch(requestUrl, { redirect: 'follow' })
     .then(async (response) => {
-      if (!response.ok) {
-        throw new Error(`Request failed: ${response.status} ${response.statusText}`);
-      }
+      if (!response.ok) throw new Error(`Request failed: ${response.status} ${response.statusText}`);
       return response.text();
     })
     .finally(() => {
-      inFlightTextRequests.delete(url);
+      inFlightTextRequests.delete(dedupeKeyUrl);
     });
 
-  inFlightTextRequests.set(url, promise);
+  inFlightTextRequests.set(dedupeKeyUrl, promise);
   return promise;
 };
 
-const GOOGLE_SHEET_ERROR = [
-  'OpenFooter could not load this Google Sheet as CSV.',
-  '',
-  'Make sure:',
-  '1. The sheet is shared with "Anyone with the link can view", or',
-  '2. The sheet is published to the web, and',
-  '3. The selected sheet tab/gid exists.'
-].join('\n');
-
-export async function getGoogleSheetData(config: OpenFooterConfig): Promise<{ config: Partial<OpenFooterConfig>; links: OpenFooterLink[] }> {
+export async function getGoogleSheetData(config: OpenFooterConfig, forceFresh = false): Promise<{ config: Partial<OpenFooterConfig>; links: OpenFooterLink[] }> {
   if (!config.url) return { config: {}, links: [] };
 
   const normalizedUrl = normalizeGoogleSheetUrl(config.url, config.sheetGid);
-  const ttl = config.cacheTtlSeconds ?? 300;
+  const ttl = config.disableCache ? 0 : (config.cacheTtlSeconds ?? 0);
   const key = `csv:${normalizedUrl}`;
 
-  const existing = inFlightDataRequests.get(normalizedUrl);
+  const dedupeKey = forceFresh ? `${normalizedUrl}:force:${Date.now()}` : normalizedUrl;
+  const existing = inFlightDataRequests.get(dedupeKey);
   if (existing) return existing;
 
   const task = (async () => {
-    const cached = readCache(key, ttl);
+    const cached = forceFresh || ttl <= 0 ? null : readCache(key, ttl);
     if (cached?.fresh && cached.data) return cached.data as { config: Partial<OpenFooterConfig>; links: OpenFooterLink[] };
 
     try {
-      const text = await fetchTextOnce(normalizedUrl);
+      const text = await fetchTextOnce(dedupeKey, withCacheBust(normalizedUrl));
       const maybeHtml = /^\s*<!doctype html/i.test(text) || /^\s*<html/i.test(text) || /<title>Google Sheets<\/title>/i.test(text);
-      if (maybeHtml) throw new Error(GOOGLE_SHEET_ERROR);
+      if (maybeHtml) throw new Error('OpenFooter could not load this Google Sheet as CSV.\n\nMake sure:\n1. The sheet is shared with "Anyone with the link can view", or\n2. The sheet is published to the web, and\n3. The selected sheet tab/gid exists.');
       const parsed = parseCsv(text);
-      writeCache(key, parsed);
+      if (!forceFresh && ttl > 0) writeCache(key, parsed);
       return parsed;
     } catch {
       if (cached?.data) return cached.data as { config: Partial<OpenFooterConfig>; links: OpenFooterLink[] };
@@ -61,10 +57,6 @@ export async function getGoogleSheetData(config: OpenFooterConfig): Promise<{ co
     }
   })();
 
-  inFlightDataRequests.set(normalizedUrl, task);
-  try {
-    return await task;
-  } finally {
-    inFlightDataRequests.delete(normalizedUrl);
-  }
+  inFlightDataRequests.set(dedupeKey, task);
+  try { return await task; } finally { inFlightDataRequests.delete(dedupeKey); }
 }

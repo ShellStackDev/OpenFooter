@@ -35,7 +35,7 @@ export type OpenFooterLink = {
 export type OpenFooterConfig = {
   source?: 'inline-json' | 'remote-json' | 'google-sheet-csv' | 'google-sheet' | 'google-sheets';
   url?: string;
-  sheetGid?: string;
+  sheetGid?: string | number;
   links?: OpenFooterLink[];
   brandName?: string;
   brandTagline?: string;
@@ -48,6 +48,7 @@ export type OpenFooterConfig = {
   layout?: OpenFooterLayout;
   showPoweredBy?: boolean;
   cacheTtlSeconds?: number;
+  disableCache?: boolean;
   newsletter?: {
     enabled?: boolean;
     title?: string;

@@ -9,7 +9,7 @@ import { isGoogleSheetSource } from './utils/google-sheet';
 const defaults: OpenFooterConfig = { source: 'inline-json', theme: 'dark', layout: 'compact', cacheTtlSeconds: 300, brandImageShape: 'rounded' };
 
 export class OpenFooterElement extends HTMLElement {
-  static get observedAttributes() { return ['source','url','sheet-gid','brand-name','brand-tagline','brand-message','brand-image-url','brand-image-alt','brand-image-shape','theme','layout']; }
+  static get observedAttributes() { return ['source','url','sheet-gid','cache-ttl-seconds','disable-cache','brand-name','brand-tagline','brand-message','brand-image-url','brand-image-alt','brand-image-shape','theme','layout']; }
   private root = this.attachShadow({ mode: 'open' });
   config: OpenFooterConfig = { ...defaults };
   private hasConnected = false;
@@ -24,6 +24,8 @@ export class OpenFooterElement extends HTMLElement {
       source: (this.getAttribute('source') as OpenFooterConfig['source']) ?? this.config.source,
       url: this.getAttribute('url') ?? this.config.url,
       sheetGid: this.getAttribute('sheet-gid') ?? this.config.sheetGid,
+      cacheTtlSeconds: this.getAttribute('cache-ttl-seconds') != null ? Number(this.getAttribute('cache-ttl-seconds')) : this.config.cacheTtlSeconds,
+      disableCache: this.getAttribute('disable-cache') != null ? this.getAttribute('disable-cache') !== 'false' : this.config.disableCache,
       brandName: this.getAttribute('brand-name') ?? this.config.brandName,
       brandTagline: this.getAttribute('brand-tagline') ?? this.config.brandTagline,
       brandMessage: this.getAttribute('brand-message') ?? this.config.brandMessage,
@@ -43,9 +45,9 @@ export class OpenFooterElement extends HTMLElement {
 
     let links: OpenFooterLink[] = [];
     let mergedConfig: OpenFooterConfig = { ...this.config };
-    if (sourceKey === 'remote-json') links = await getRemoteJsonLinks(mergedConfig);
+    if (sourceKey === 'remote-json') links = await getRemoteJsonLinks(mergedConfig, force);
     else if (sourceKey === 'google-sheet-csv') {
-      const data = await getGoogleSheetData(mergedConfig);
+      const data = await getGoogleSheetData(mergedConfig, force);
       mergedConfig = { ...data.config, ...mergedConfig };
       links = data.links;
     } else links = getInlineLinks(mergedConfig);
