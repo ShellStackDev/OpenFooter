@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>OpenFooter Google Sheet Share URL</title>
+    <link rel="stylesheet" href="../shared/example-page.css" />
+  </head>
+  <body>
+    <main class="demo-page">
+      <h1>Google Sheet Share URL</h1>
+      <p>This example expects the Google Sheet to be shared as “Anyone with the link can view” or published to the web.</p>
+      <p>Add these Google Sheet meta rows for brand image support:</p>
+      <pre><code>meta,brandImageUrl,https://placehold.co/96x96?text=OF,,,,,,,,,,
+meta,brandImageAlt,OpenFooter demo logo,,,,,,,,,,
+meta,brandImageShape,rounded,,,,,,,,,,</code></pre>
+    </main>
+
+    <script src="../../dist/openfooter.iife.min.js"></script>
+
+    <open-footer
+      source="google-sheet"
+      url="https://docs.google.com/spreadsheets/d/19MtVKVncGDUlRxSWbWcJftAKBkszbIdWk8jwfGdrg5g/edit?usp=sharing"
+      sheet-gid="0"
+      brand-name="OpenFooter Google Sheet Test"
+      brand-tagline="Testing a normal Google Sheets share URL"
+      brand-message="This example demonstrates loading footer links directly from a normal Google Sheets share/edit URL."
+      theme="dark"
+      layout="columns-brand">
+    </open-footer>
+  </body>
+</html>
