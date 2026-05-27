@@ -1,22 +1,28 @@
 (function(exports) {
   "use strict";
   const getStyles = () => `
-:host{--of-bg:#101114;--of-text:#f2f2f2;--of-muted:#b6bdc7;--of-link:#83b8ff;--of-link-hover:#b9d4ff;--of-border:#2b313b;--of-radius:12px;--of-max-width:1100px;--of-font-family:Inter,system-ui,sans-serif;--of-column-gap:24px;--of-row-gap:16px;--of-padding:24px 16px;--of-brand-image-size:48px;--of-brand-image-radius:var(--of-radius);--of-brand-message-max-width:36rem;display:block}
-:host([theme="light"]){--of-bg:#fff;--of-text:#1a1d21;--of-muted:#5f6773;--of-link:#0057d8;--of-link-hover:#003e9b;--of-border:#e3e8ef}
-:host([theme="minimal"]){--of-bg:transparent;--of-border:transparent}
-.wrap{background:var(--of-bg);color:var(--of-text);font-family:var(--of-font-family);border-top:1px solid var(--of-border)}
+:host{--of-primary-color:#2563eb;--of-accent-color:#7c3aed;--of-accent-color-2:#06b6d4;--of-gradient:linear-gradient(135deg,var(--of-primary-color),var(--of-accent-color),var(--of-accent-color-2));--of-gradient-soft:linear-gradient(135deg,color-mix(in oklab,var(--of-primary-color) 22%,transparent),color-mix(in oklab,var(--of-accent-color) 18%,transparent));--of-bg:#0b0f19;--of-bg-elevated:#101828;--of-panel-bg:rgba(255,255,255,.03);--of-text:#e6ecff;--of-text-muted:#9fb0d1;--of-heading:#f8fbff;--of-border:rgba(255,255,255,.1);--of-shadow:0 20px 50px rgba(0,0,0,.35);--of-link:color-mix(in oklab,var(--of-primary-color) 82%,white);--of-link-hover:color-mix(in oklab,var(--of-accent-color) 70%,white);--of-radius:14px;--of-radius-lg:20px;--of-max-width:1400px;--of-font-family:Inter,ui-sans-serif,system-ui,sans-serif;--of-column-gap:28px;--of-row-gap:20px;--of-padding:42px 24px;--of-gap:16px;--of-brand-image-size:52px;--of-brand-image-radius:var(--of-radius);--of-brand-message-max-width:38rem;display:block}
+:host([theme="light"]){--of-bg:#f8fafc;--of-bg-elevated:#fff;--of-panel-bg:rgba(255,255,255,.75);--of-text:#182132;--of-text-muted:#55657f;--of-heading:#0f172a;--of-border:rgba(15,23,42,.12);--of-shadow:0 14px 35px rgba(15,23,42,.08)}
+:host([theme="minimal"]){--of-bg:transparent;--of-panel-bg:transparent;--of-shadow:none;--of-border:rgba(128,128,128,.2)}
+.wrap{background:var(--of-bg);background-image:var(--of-gradient-soft);color:var(--of-text);font-family:var(--of-font-family);border-top:1px solid var(--of-border)}
+:host([background-style="solid"]) .wrap{background-image:none}
+:host([background-style="gradient"]) .wrap{background-image:var(--of-gradient-soft)}
+:host([background-style="mesh"]) .wrap{background-image:radial-gradient(900px 300px at 10% 0%,color-mix(in oklab,var(--of-primary-color) 26%,transparent),transparent),radial-gradient(900px 300px at 95% 5%,color-mix(in oklab,var(--of-accent-color) 22%,transparent),transparent)}
+:host([background-style="minimal"]) .wrap{background-image:none}
 .inner{max-width:var(--of-max-width);margin:0 auto;padding:var(--of-padding);display:grid;gap:var(--of-row-gap)}
 .layout{display:grid;gap:var(--of-row-gap)}
-.layout.simple,.layout.columns-brand,.layout.newsletter{grid-template-columns:1fr 2fr;align-items:start}
+.layout.simple,.layout.columns-brand,.layout.newsletter{grid-template-columns:minmax(280px,1fr) 2fr;align-items:start}
 .layout.centered{text-align:center}.layout.centered .openfooter-brand-main{justify-content:center;text-align:center}
 .inline-links{display:flex;flex-wrap:wrap;gap:12px}.inline-links.centered{justify-content:center}
 .grid.columns{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:var(--of-row-gap) var(--of-column-gap)}
-a{color:var(--of-link)}a:hover{color:var(--of-link-hover)}
-.small{font-size:.88rem;color:var(--of-muted)} ul{list-style:none;padding:0;margin:0;display:grid;gap:8px}
-.social-row{display:flex;gap:10px;flex-wrap:wrap}.social-link{padding:6px 10px;border:1px solid var(--of-border);border-radius:999px;text-decoration:none}
-.openfooter-brand{display:grid;gap:8px}.openfooter-brand-main{display:flex;gap:12px;align-items:flex-start}.openfooter-brand-image{width:var(--of-brand-image-size);height:var(--of-brand-image-size);object-fit:cover;border:1px solid var(--of-border)}.openfooter-brand-image.shape-circle{border-radius:999px}.openfooter-brand-image.shape-rounded{border-radius:var(--of-brand-image-radius)}.openfooter-brand-image.shape-square{border-radius:0}.openfooter-brand-name{font-weight:700}.openfooter-brand-tagline{color:var(--of-muted)}.openfooter-brand-message{max-width:var(--of-brand-message-max-width);color:var(--of-muted)}
-.newsletter form{display:flex;gap:8px;flex-wrap:wrap}.newsletter input{padding:8px;border-radius:8px;border:1px solid var(--of-border);background:transparent;color:var(--of-text)}.newsletter button{padding:8px 12px;border-radius:8px;border:1px solid var(--of-border);background:var(--of-link);color:#fff}
-@media (max-width: 840px){.layout.simple,.layout.columns-brand,.layout.newsletter{grid-template-columns:1fr}}
+section{background:var(--of-panel-bg);backdrop-filter:blur(8px);border:1px solid var(--of-border);border-radius:var(--of-radius);padding:14px 14px 12px;box-shadow:var(--of-shadow)}
+h3,h4{margin:0 0 8px;color:var(--of-heading);letter-spacing:.01em}h4{font-size:.92rem;text-transform:uppercase;opacity:.9}
+a{color:var(--of-link);text-decoration:none;transition:color 180ms ease,background 180ms ease,border-color 180ms ease,transform 180ms ease}a:hover{color:var(--of-link-hover);transform:translateY(-1px)}
+.small{font-size:.88rem;color:var(--of-text-muted)} ul{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.social-row{display:flex;gap:10px;flex-wrap:wrap}.social-link{padding:7px 11px;border:1px solid var(--of-border);border-radius:999px;background:var(--of-panel-bg)}
+.openfooter-brand{display:grid;gap:8px}.openfooter-brand-main{display:flex;gap:12px;align-items:flex-start;padding:10px;border-radius:var(--of-radius-lg);background:var(--of-panel-bg);border:1px solid var(--of-border);box-shadow:var(--of-shadow)}.openfooter-brand-image{width:var(--of-brand-image-size);height:var(--of-brand-image-size);object-fit:cover;border:1px solid var(--of-border)}.openfooter-brand-image.shape-circle{border-radius:999px}.openfooter-brand-image.shape-rounded{border-radius:var(--of-brand-image-radius)}.openfooter-brand-image.shape-square{border-radius:0}.openfooter-brand-name{font-weight:700;font-size:1.03rem}.openfooter-brand-tagline{color:var(--of-text-muted)}.openfooter-brand-message{max-width:var(--of-brand-message-max-width);color:var(--of-text-muted)}
+.newsletter{padding:18px;border-radius:var(--of-radius-lg);background:linear-gradient(135deg,color-mix(in oklab,var(--of-primary-color) 16%,transparent),color-mix(in oklab,var(--of-accent-color) 12%,transparent));}.newsletter form{display:flex;gap:8px;flex-wrap:wrap}.newsletter input{padding:10px 12px;border-radius:10px;border:1px solid var(--of-border);background:var(--of-bg-elevated);color:var(--of-text)}.newsletter button{padding:10px 14px;border-radius:10px;border:1px solid transparent;background:var(--of-gradient);color:#fff}
+@media (max-width: 900px){.layout.simple,.layout.columns-brand,.layout.newsletter{grid-template-columns:1fr}}
 `;
   const parseBool = (v) => ["true", "yes", "1", "y"].includes((v ?? "").trim().toLowerCase());
   const splitCsvLine = (line) => {
@@ -221,6 +227,17 @@ a{color:var(--of-link)}a:hover{color:var(--of-link-hover)}
   };
   const renderLinks = (items) => `<ul>${items.map((l) => `<li><a href="${escapeHtml(l.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(l.label)}</a>${l.description ? `<div class="small">${escapeHtml(l.description)}</div>` : ""}</li>`).join("")}</ul>`;
   const renderColumns = (grouped) => Object.entries(grouped).map(([name, items]) => `<section><h4>${escapeHtml(name)}</h4>${renderLinks(items)}</section>`).join("");
+  const resolveVisualVars = (config) => {
+    var _a, _b, _c;
+    const p = (_a = config.primaryColor) == null ? void 0 : _a.trim();
+    const a = (_b = config.accentColor || config.primaryColor) == null ? void 0 : _b.trim();
+    const a2 = (_c = config.accentColor2 || config.accentColor || config.primaryColor) == null ? void 0 : _c.trim();
+    const vars = [];
+    if (p) vars.push(`--of-primary-color:${escapeHtml(p)}`);
+    if (a) vars.push(`--of-accent-color:${escapeHtml(a)}`);
+    if (a2) vars.push(`--of-accent-color-2:${escapeHtml(a2)}`);
+    return vars.length ? ` style="${vars.join(";")}"` : "";
+  };
   const buildFooterHtml = (config, links) => {
     var _a;
     const normalized = normalizeLinks(links);
@@ -241,7 +258,8 @@ a{color:var(--of-link)}a:hover{color:var(--of-link-hover)}
       newsletter: `<div class="layout newsletter">${brand}<div class="grid columns">${sections}</div>${newsletter}</div>`,
       compact: `<div class="layout compact">${brand}<nav class="inline-links">${normalized.map((l) => `<a href="${escapeHtml(l.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(l.label)}</a>`).join("")}</nav></div>`
     };
-    return `<div class="wrap"><div class="inner">${body[layout] ?? body.compact}<div class="small copyright">© ${(/* @__PURE__ */ new Date()).getFullYear()} ${escapeHtml(config.copyrightName ?? config.brandName ?? "OpenFooter")}${config.showPoweredBy === false ? "" : ` • <a href="https://github.com" target="_blank" rel="noopener noreferrer">Powered by OpenFooter</a>`}</div></div></div>`;
+    const visualVars = resolveVisualVars(config);
+    return `<div class="wrap"${visualVars}><div class="inner">${body[layout] ?? body.compact}<div class="small copyright">© ${(/* @__PURE__ */ new Date()).getFullYear()} ${escapeHtml(config.copyrightName ?? config.brandName ?? "OpenFooter")}${config.showPoweredBy === false ? "" : ` • <a href="https://github.com" target="_blank" rel="noopener noreferrer">Powered by OpenFooter</a>`}</div></div></div>`;
   };
   const defaults = { theme: "dark", layout: "columns-brand", cacheTtlSeconds: 0, brandImageShape: "rounded" };
   class OpenFooterElement extends HTMLElement {
@@ -253,7 +271,7 @@ a{color:var(--of-link)}a:hover{color:var(--of-link-hover)}
       this.renderQueued = false;
     }
     static get observedAttributes() {
-      return ["url", "sheet-gid", "cache-ttl-seconds", "disable-cache", "brand-name", "brand-tagline", "brand-message", "brand-image-url", "brand-image-alt", "brand-image-shape", "copyright-name", "show-powered-by", "theme", "layout"];
+      return ["url", "sheet-gid", "cache-ttl-seconds", "disable-cache", "brand-name", "brand-tagline", "brand-message", "brand-image-url", "brand-image-alt", "brand-image-shape", "copyright-name", "show-powered-by", "theme", "layout", "primary-color", "accent-color", "accent-color-2", "background-style"];
     }
     connectedCallback() {
       this.hasConnected = true;
@@ -280,7 +298,11 @@ a{color:var(--of-link)}a:hover{color:var(--of-link-hover)}
         copyrightName: this.getAttribute("copyright-name") ?? this.config.copyrightName,
         showPoweredBy: this.getAttribute("show-powered-by") != null ? this.getAttribute("show-powered-by") !== "false" : this.config.showPoweredBy,
         theme: this.getAttribute("theme") ?? this.config.theme,
-        layout: this.getAttribute("layout") ?? this.config.layout
+        layout: this.getAttribute("layout") ?? this.config.layout,
+        primaryColor: this.getAttribute("primary-color") ?? this.config.primaryColor,
+        accentColor: this.getAttribute("accent-color") ?? this.config.accentColor,
+        accentColor2: this.getAttribute("accent-color-2") ?? this.config.accentColor2,
+        backgroundStyle: this.getAttribute("background-style") ?? this.config.backgroundStyle
       };
     }
     requestRender(force) {
