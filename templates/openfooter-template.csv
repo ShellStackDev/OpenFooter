@@ -1,0 +1,9 @@
+type,key,value,label,url,icon,category,priority,is_active,is_featured,description,start_date,end_date
+meta,brandName,TurtlesStudios,,,,,,,,,,
+meta,brandTagline,"Music, tech, gaming, and creative projects",,,,,,,,,,
+meta,brandMessage,"Music, gear reviews, dev experiments, gaming, and creative builds.",,,,,,,,,,
+meta,brandImageUrl,https://example.com/logo.png,,,,,,,,,,
+meta,brandImageAlt,TurtlesStudios logo,,,,,,,,,,
+meta,brandImageShape,rounded,,,,,,,,,,
+social,,,YouTube,https://youtube.com/@yourhandle,youtube,Social,1,true,false,Main channel,,
+project,,,OpenFooter,https://github.com/prlaclede/OpenFooter,github,Projects,10,true,true,Open-source footer library,,
