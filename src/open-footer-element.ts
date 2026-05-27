@@ -1,6 +1,6 @@
 import type { OpenFooterConfig } from './schema';
 import { getStyles } from './styles';
-import { getGoogleSheetData } from './adapters/google-sheet-csv';
+import { getGoogleSheetData } from './google-sheet';
 import { buildFooterHtml } from './render';
 
 const defaults: OpenFooterConfig = { theme: 'dark', layout: 'columns-brand', cacheTtlSeconds: 0, brandImageShape: 'rounded' };
