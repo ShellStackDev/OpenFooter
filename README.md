@@ -124,3 +124,37 @@ Background styles:
 <open-footer background-style="gradient"></open-footer>
 <open-footer background-style="mesh"></open-footer>
 ```
+
+
+## Using OpenFooter with Next.js / React
+
+Install:
+
+```bash
+npm install openfooter
+```
+
+```tsx
+"use client";
+
+import { OpenFooter } from "openfooter/react";
+
+export default function OpenFooterWrapper() {
+  return (
+    <OpenFooter
+      url="https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit?usp=sharing"
+      sheetGid="0"
+      theme="dark"
+      layout="columns-brand"
+      brandName="TurtlesStudios"
+      brandTagline="Music, tech, gaming, and creative projects"
+      primaryColor="#2563eb"
+      accentColor="#7c3aed"
+      accentColor2="#06b6d4"
+      backgroundStyle="mesh"
+    />
+  );
+}
+```
+
+This wrapper avoids the TypeScript `JSX.IntrinsicElements` custom-element error by rendering via a typed React component using `React.createElement`.

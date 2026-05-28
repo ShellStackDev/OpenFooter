@@ -1,6 +1,6 @@
 {
   "name": "openfooter",
-  "version": "0.1.3",
+  "version": "0.1.0",
   "description": "A framework-agnostic embeddable footer Web Component for unified links, socials, and project promotion.",
   "type": "module",
   "homepage": "https://github.com/prlaclede/OpenFooter#readme",
@@ -19,6 +19,11 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/openfooter.es.js",
       "default": "./dist/openfooter.es.js"
+    },
+    "./react": {
+      "types": "./dist/react/index.d.ts",
+      "import": "./dist/react/index.js",
+      "default": "./dist/react/index.js"
     }
   },
   "files": [
@@ -29,7 +34,7 @@
   ],
   "scripts": {
     "dev": "vite",
-    "build": "vite build && node scripts/build-minify.mjs",
+    "build": "vite build && tsc -p tsconfig.react.json && node scripts/build-minify.mjs",
     "typecheck": "tsc --noEmit",
     "preview": "vite preview",
     "prepublishOnly": "npm run typecheck && npm run build",
@@ -60,10 +65,19 @@
     "terser": "^5.39.2",
     "typescript": "^5.6.3",
     "vite": "^5.4.10",
-    "vite-plugin-dts": "^4.5.4"
+    "vite-plugin-dts": "^4.5.4",
+    "@types/react": "^18.3.12"
   },
   "publishConfig": {
     "access": "public",
     "provenance": true
+  },
+  "peerDependencies": {
+    "react": ">=18"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    }
   }
 }
