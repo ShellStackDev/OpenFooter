@@ -1,6 +1,7 @@
 declare module "react" {
+  export type ReactElement = unknown;
   export type CSSProperties = Record<string, string | number>;
-  export function createElement(type: string, props?: Record<string, unknown>): unknown;
+  export function createElement(type: string, props?: Record<string, unknown>): ReactElement;
   export function useEffect(effect: () => void | (() => void), deps?: unknown[]): void;
   export function useMemo<T>(factory: () => T, deps: unknown[]): T;
 }

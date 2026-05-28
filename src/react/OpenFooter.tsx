@@ -17,20 +17,20 @@ export type OpenFooterReactProps = {
   primaryColor?: string;
   accentColor?: string;
   accentColor2?: string;
-  backgroundStyle?: "solid" | "gradient" | "mesh" | "minimal";
+  backgroundStyle?: "solid" | "gradient" | "mesh" | "minimal" | "dark";
   disableCache?: boolean;
   showPoweredBy?: boolean;
   className?: string;
   style?: React.CSSProperties;
 };
 
-export function OpenFooter(props: OpenFooterReactProps) {
+export function OpenFooter(props: OpenFooterReactProps): React.ReactElement {
   useEffect(() => {
     void import("../index");
   }, []);
 
   const attrs = useMemo(() => {
-    const raw: Record<string, unknown> = {
+    const result: Record<string, unknown> = {
       url: props.url,
       "sheet-gid": props.sheetGid,
       "brand-name": props.brandName,
@@ -52,10 +52,10 @@ export function OpenFooter(props: OpenFooterReactProps) {
       style: props.style
     };
 
-    return Object.fromEntries(Object.entries(raw).filter(([, v]) => v !== undefined));
+    return Object.fromEntries(Object.entries(result).filter(([, value]) => value !== undefined));
   }, [props]);
 
-  return React.createElement("open-footer", attrs);
+  return React.createElement("open-footer", attrs) as React.ReactElement;
 }
 
 export default OpenFooter;
