@@ -1,6 +1,6 @@
 {
   "name": "openfooter",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A framework-agnostic embeddable footer Web Component for unified links, socials, and project promotion.",
   "type": "module",
   "homepage": "https://github.com/prlaclede/OpenFooter#readme",
