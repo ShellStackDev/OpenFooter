@@ -3,13 +3,13 @@
   "version": "0.1.3",
   "description": "A framework-agnostic embeddable footer Web Component for unified links, socials, and project promotion.",
   "type": "module",
-  "homepage": "https://github.com/prlaclede/OpenFooter#readme",
+  "homepage": "https://github.com/ShellStackDev/OpenFooter#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/prlaclede/OpenFooter.git"
+    "url": "git+https://github.com/ShellStackDev/OpenFooter.git"
   },
   "bugs": {
-    "url": "https://github.com/prlaclede/OpenFooter/issues"
+    "url": "https://github.com/ShellStackDev/OpenFooter/issues"
   },
   "main": "dist/openfooter.iife.js",
   "module": "dist/openfooter.es.js",
