@@ -1,15 +1,15 @@
 {
   "name": "openfooter",
-  "version": "0.1.5",
+  "version": "0.1.0",
   "description": "A framework-agnostic embeddable footer Web Component for unified links, socials, and project promotion.",
   "type": "module",
-  "homepage": "https://github.com/ShellStackDev/OpenFooter#readme",
+  "homepage": "https://github.com/prlaclede/OpenFooter#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ShellStackDev/OpenFooter.git"
+    "url": "git+https://github.com/prlaclede/OpenFooter.git"
   },
   "bugs": {
-    "url": "https://github.com/ShellStackDev/OpenFooter/issues"
+    "url": "https://github.com/prlaclede/OpenFooter/issues"
   },
   "main": "dist/openfooter.iife.js",
   "module": "dist/openfooter.es.js",
@@ -62,14 +62,15 @@
   "author": "Phillip Laclede",
   "license": "MIT",
   "devDependencies": {
-    "@types/react": "^18.3.12",
     "terser": "^5.39.2",
     "typescript": "^5.6.3",
-    "vite": "^8.0.14",
-    "vite-plugin-dts": "^4.5.4"
+    "vite": "^5.4.10",
+    "vite-plugin-dts": "^4.5.4",
+    "@types/react": "^18.3.12"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "provenance": true
   },
   "peerDependencies": {
     "react": ">=18"

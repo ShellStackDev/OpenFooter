@@ -24,7 +24,7 @@ export type OpenFooterReactProps = {
   style?: React.CSSProperties;
 };
 
-export function OpenFooter(props: OpenFooterReactProps): React.ReactElement {
+export const OpenFooter: React.FC<OpenFooterReactProps> = (props) => {
   useEffect(() => {
     void import("../index");
   }, []);
@@ -55,7 +55,7 @@ export function OpenFooter(props: OpenFooterReactProps): React.ReactElement {
     return Object.fromEntries(Object.entries(result).filter(([, value]) => value !== undefined));
   }, [props]);
 
-  return React.createElement("open-footer", attrs) as React.ReactElement;
-}
+  return React.createElement("open-footer", attrs);
+};
 
 export default OpenFooter;
